@@ -1,0 +1,183 @@
+SQL> 
+SQL> /*DROP TABLES*/
+SQL> DROP TABLE customer_fav;
+
+Table dropped.
+
+SQL> DROP TABLE promo_codes;
+
+Table dropped.
+
+SQL> DROP TABLE customer_review;
+
+Table dropped.
+
+SQL> DROP TABLE reservation;
+
+Table dropped.
+
+SQL> DROP TABLE tee_time;
+
+Table dropped.
+
+SQL> DROP TABLE credit_card;
+
+Table dropped.
+
+SQL> DROP TABLE customer;
+
+Table dropped.
+
+SQL> DROP TABLE course;
+
+Table dropped.
+
+SQL> 
+SQL> /*CREATE TABLES*/
+SQL> CREATE TABLE course
+  2  (course_name VARCHAR2(50) CONSTRAINT SYS_COURSE_PK PRIMARY KEY,
+  3  course_city VARCHAR2(25) NOT NULL,
+  4  course_prov CHAR(2) CONSTRAINT SYS_COURSE_PROV_CK CHECK (REGEXP_LIKE (course_prov, '[A-Z][A-Z]')),
+  5  course_country VARCHAR2(25) NOT NULL,
+  6  course_postal CHAR(7) CONSTRAINT SYS_COURSE_POSTAL_CK CHECK (REGEXP_LIKE (course_postal, '[A-Z][0-9][A-Z] [0-9][A-Z][0-9]')) NOT NULL,
+  7  average_rating NUMBER(2,1) CONSTRAINT SYS_COURSE_RATING_CK CHECK (average_rating BETWEEN 1 AND 5),
+  8  course_desc VARCHAR2(1500) NOT NULL,
+  9  course_year_build DATE,
+ 10  course_length NUMBER(6,2));
+
+Table created.
+
+SQL> 
+SQL> 
+SQL>  CREATE TABLE customer (
+  2  cust_first_name VARCHAR2(25),
+  3  cust_last_name VARCHAR2(25),
+  4  cust_email VARCHAR2(60),
+  5  cust# NUMBER,
+  6  gift_card_credit NUMBER(5,2),
+  7  CONSTRAINT SYS_CUST_PK PRIMARY KEY (cust#),
+  8  CONSTRAINT SYS_CUST_EMAIL_UK UNIQUE (cust_email),
+  9  CONSTRAINT SYS_CUST_EMAIL_CK CHECK (cust_email LIKE '%@%'),
+ 10  CONSTRAINT SYS_CUST_GCC_CK CHECK (gift_card_credit >= 0)
+ 11   );
+
+Table created.
+
+SQL> 
+SQL> ALTER TABLE customer
+  2    MODIFY (cust_first_name NOT NULL)
+  3    MODIFY (cust_last_name NOT NULL);
+
+Table altered.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL>  CREATE TABLE credit_card (
+  2      card_no VARCHAR2(16) CONSTRAINT SYS_CRED_PK PRIMARY KEY,
+  3      card_firstname VARCHAR2(25) NOT NULL,
+  4      card_lastname VARCHAR2(25) NOT NULL,
+  5      card_expiration NUMBER(4) NOT NULL,
+  6      default_flag NUMBER(1) NOT NULL,
+  7      cust_no NUMBER
+  8  );
+
+Table created.
+
+SQL> 
+SQL> ALTER TABLE credit_card
+  2      ADD CONSTRAINT SYS_CRED_DF_CK CHECK(default_flag IN (0,1));
+
+Table altered.
+
+SQL> 
+SQL> 
+SQL> CREATE TABLE tee_time(
+  2  tee_date DATE CONSTRAINT SYS_TEE_PK PRIMARY KEY,
+  3    tee_price NUMBER(5,2) NOT NULL CONSTRAINT SYS_TEE_TEEPRICE_CK CHECK (tee_price >= 0),
+  4    cart_inclusion CHAR(1) NOT NULL CONSTRAINT SYS_TEE_CART_CK CHECK (cart_inclusion IN ('Y', 'N')),
+  5    hole_number NUMBER(2) NOT NULL CONSTRAINT SYS_TEE_HOLENO_CK CHECK (hole_number IN (9, 18)),
+  6    available_spaces NUMBER(1) NOT NULL CONSTRAINT SYS_TEE_SPACES_CK CHECK (available_spaces BETWEEN 0 AND 4),
+  7    course_name VARCHAR2(50),
+  8   CONSTRAINT SYS_COURSE_TEE_FK FOREIGN KEY (course_name) REFERENCES course (course_name) ON DELETE CASCADE
+  9  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE reservation (
+  2  reservation# NUMBER,
+  3    total_green_fees NUMBER(8,2),
+  4    tax_paid NUMBER(5,2),
+  5    amt_charged NUMBER,
+  6    number_of_players CHAR(1),
+  7    card_no VARCHAR2(16),
+  8    tee_date DATE,
+  9    CONSTRAINT SYS_RESERV_PK PRIMARY KEY (reservation#),
+ 10    CONSTRAINT SYS_RESERV_PLAYERS_CK CHECK (number_of_players BETWEEN 1 AND 4),
+ 11    CONSTRAINT SYS_TEE_RESERV_FK FOREIGN KEY (tee_date) REFERENCES tee_time (tee_date),
+ 12    CONSTRAINT SYS_CRED_RESERV_FK FOREIGN KEY (card_no) REFERENCES credit_card (card_no)
+ 13  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE customer_review (
+  2  review# NUMBER CONSTRAINT SYS_CREVIEW_PK PRIMARY KEY,
+  3    review_title VARCHAR2(100),
+  4    review_rating CHAR(1) NOT NULL CONSTRAINT SYS_CREVIEW_RATING_CK CHECK (review_rating BETWEEN 0 AND 5),
+  5    review_comments VARCHAR2(500) NOT NULL,
+  6    course_name VARCHAR2(50),
+  7    reservation# NUMBER,
+  8    CONSTRAINT SYS_COURSE_CREVIEW_FK FOREIGN KEY (course_name) REFERENCES course (course_name)
+  9  );
+
+Table created.
+
+SQL> 
+SQL> CREATE TABLE promo_codes (
+  2  promocode CHAR(18),
+  3    is_used NUMBER(1) NOT NULL,
+  4    date_issued DATE NOT NULL,
+  5    value CHAR(2) NOT NULL,
+  6    expiration_date DATE NOT NULL,
+  7    reservation# NUMBER,
+  8    cust# NUMBER,
+  9    CONSTRAINT SYS_PROMO_PK PRIMARY KEY (promocode),
+ 10    CONSTRAINT SYS_PROMO_USED_CK CHECK (is_used IN (0, 1)),
+ 11    CONSTRAINT SYS_PROMO_EXPIRY_CK CHECK (expiration_date > date_issued)
+ 12  );
+
+Table created.
+
+SQL> 
+SQL> ALTER TABLE promo_codes
+  2  ADD CONSTRAINT SYS_RESERV_PROMO_FK FOREIGN KEY (reservation#) REFERENCES reservation
+  3      ADD CONSTRAINT SYS_CUST_PROMO_FK FOREIGN KEY (cust#) REFERENCES customer;
+
+Table altered.
+
+SQL> 
+SQL> 
+SQL> 
+SQL>  CREATE TABLE customer_fav (
+  2    course_name VARCHAR2(50),
+  3    cust# NUMBER,
+  4    CONSTRAINT SYS_COURSE_FAV_FK FOREIGN KEY (course_name) REFERENCES course(course_name),
+  5    CONSTRAINT SYS_CUST_FAV_FK  FOREIGN KEY (cust#)REFERENCES customer(cust#),
+  6    PRIMARY KEY (course_name, cust#)
+  7  );
+
+Table created.
+
+SQL> 
+SQL> ALTER TABLE customer_review
+  2  ADD CONSTRAINT SYS_RESERV_CREVIEW_FK FOREIGN KEY (reservation#) REFERENCES reservation (reservation#);
+
+Table altered.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> spool off

@@ -1,0 +1,178 @@
+SQL> SET ECHO ON
+SQL> SET VERIFY ON
+SQL> SET PAGESIZE 66
+SQL> SET LINESIZE 100
+SQL> SELECT * FROM course;
+
+COURSE_NAME                                        COURSE_CITY               CO                     
+-------------------------------------------------- ------------------------- --                     
+COURSE_COUNTRY            COURSE_ AVERAGE_RATING                                                    
+------------------------- ------- --------------                                                    
+COURSE_DESC                                                                                         
+----------------------------------------------------------------------------------------------------
+COURSE_YE COURSE_LENGTH                                                                             
+--------- -------------                                                                             
+Casselberry Golf Club                              Casselberry               FL                     
+USA                       A9A 9A9            3.5                                                    
+Casselberry is a thoroughly enjoyable experience for both the newcomer and the low-handicapper.     
+01-NOV-47       5472.52                                                                             
+                                                                                                    
+Grande Vista Golf Club                             Orlando                   FL                     
+USA                       T3H 8M1            4.3                                                    
+This 9-hole, par 32 Ron Garl design encourages learning and development for all levels of play, but 
+also provides challenges for the most avid golfer.                                                  
+29-DEC-97       2308.78                                                                             
+                                                                                                    
+North Shore Golf Club                              Orlando                   FL                     
+USA                       T3H 8M2            4.2                                                    
+The golf course features two distinct nines converging to form one remarkable 18-hole layout.       
+16-JAN-01       6896.21                                                                             
+                                                                                                    
+Shingle Creek Golf Club                            Orlando                   FL                     
+USA                       T6H 2J3            4.4                                                    
+The future of your best golf game may just be waiting on the sandy banks of the historic Shingle Cre
+ek, where stories of the past burble mysteriously beneath the silken black waters.                  
+04-OCT-03       7213.86                                                                             
+                                                                                                    
+Kissimmee Bay Country Club                         Kissimmee                 FL                     
+USA                       G7B 5T5            3.9                                                    
+This 6,846 yard, par 71 championship course is graced by the presence of century-old oaks, lofty cyp
+ress tress, a dozen intreging and challenging water hazards and the presence of sand hill cranes.   
+19-FEB-90       6830.54                                                                             
+                                                                                                    
+
+SQL> 
+SQL> SELECT * FROM tee_time;
+
+TEE_DATE   TEE_PRICE C HOLE_NUMBER AVAILABLE_SPACES                                                 
+--------- ---------- - ----------- ----------------                                                 
+COURSE_NAME                                                                                         
+--------------------------------------------------                                                  
+06-NOV-22      34.99 N          18                2                                                 
+Casselberry Golf Club                                                                               
+                                                                                                    
+06-NOV-22      34.99 N          18                0                                                 
+Casselberry Golf Club                                                                               
+                                                                                                    
+06-NOV-22      50.99 Y          18                4                                                 
+Casselberry Golf Club                                                                               
+                                                                                                    
+06-NOV-22      40.99 N          18                2                                                 
+Grande Vista Golf Club                                                                              
+                                                                                                    
+06-NOV-22      40.99 N          18                1                                                 
+Grande Vista Golf Club                                                                              
+                                                                                                    
+07-NOV-22      59.99 Y          18                4                                                 
+Grande Vista Golf Club                                                                              
+                                                                                                    
+06-NOV-22      40.99 N          18                1                                                 
+North Shore Golf Club                                                                               
+                                                                                                    
+07-NOV-22      60.99 Y          18                0                                                 
+North Shore Golf Club                                                                               
+                                                                                                    
+08-NOV-22      60.99 Y          18                2                                                 
+North Shore Golf Club                                                                               
+                                                                                                    
+06-NOV-22      35.99 N          18                2                                                 
+Shingle Creek Golf Club                                                                             
+                                                                                                    
+06-NOV-22      45.99 Y          18                0                                                 
+Shingle Creek Golf Club                                                                             
+                                                                                                    
+06-NOV-22      35.99 N          18                1                                                 
+Shingle Creek Golf Club                                                                             
+                                                                                                    
+06-NOV-22      30.99 N          18                0                                                 
+Kissimmee Bay Country Club                                                                          
+                                                                                                    
+07-NOV-22      46.99 Y          18                0                                                 
+Kissimmee Bay Country Club                                                                          
+                                                                                                    
+07-NOV-22      46.99 Y          18                2                                                 
+Kissimmee Bay Country Club                                                                          
+                                                                                                    
+
+15 rows selected.
+
+SQL> 
+SQL> SELECT * FROM customer;
+
+CUST_FIRST_NAME           CUST_LAST_NAME                                                            
+------------------------- -------------------------                                                 
+CUST_EMAIL                                                        CUST# GIFT_CARD_CREDIT            
+------------------------------------------------------------ ---------- ----------------            
+Jake                      Lee                                                                       
+jakethewarri0r@gmail.com                                         568973                1            
+                                                                                                    
+Tiffany                   Bradley                                                                   
+tiffywiffy@gmail.com                                             923745                2            
+                                                                                                    
+Holly                     VanDoofe                                                                  
+vanh3ls!ng@gmail.com                                             256731                2            
+                                                                                                    
+
+SQL> 
+SQL> SELECT * FROM cust_favourites;
+SELECT * FROM cust_favourites
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> SELECT * FROM reservation;
+
+RESERVATION# TOTAL_GREEN_FEES   TAX_PAID AMT_CHARGED N CARD_NO          TEE_DATE                    
+------------ ---------------- ---------- ----------- - ---------------- ---------                   
+   525001926            38.49        3.5       34.99 4 ###-###-9672     06-NOV-22                   
+   525001827            60.49        5.5       54.99 1 ###-###-2241     07-NOV-22                   
+   525001324            50.59        4.6       45.99 2 ###-###-2241     06-NOV-22                   
+   525001689            27.49        2.5       24.99 1 ###-###-3237     06-NOV-22                   
+   525001223            45.49        4.5       40.99 4 ###-###-3237     07-NOV-22                   
+
+SQL> 
+SQL> SELECT * FROM customer_review;
+
+   REVIEW#                                                                                          
+----------                                                                                          
+REVIEW_TITLE                                                                                        
+----------------------------------------------------------------------------------------------------
+R                                                                                                   
+-                                                                                                   
+REVIEW_COMMENTS                                                                                     
+----------------------------------------------------------------------------------------------------
+COURSE_NAME                                        RESERVATION#                                     
+-------------------------------------------------- ------------                                     
+      1001                                                                                          
+Golfers Dream                                                                                       
+4                                                                                                   
+Challenging course also really loved the ambience and scenery- would recommend!                     
+Casselberry Golf Club                                 525001926                                     
+                                                                                                    
+      1002                                                                                          
+Perfectly fun with friends                                                                          
+4                                                                                                   
+Had lots of challenging holes, not too difficult either.                                            
+North Shore Golf Club                                 525001827                                     
+                                                                                                    
+      1003                                                                                          
+Puzzling course!                                                                                    
+5                                                                                                   
+Never have I ever had so much fun wondering how to tackle each hole.                                
+Shingle Creek Golf Club                               525001324                                     
+                                                                                                    
+
+SQL> 
+SQL> SELECT * FROM promo_codes;
+
+PROMOCODE             IS_USED DATE_ISSU VA EXPIRATIO RESERVATION#      CUST#                        
+------------------ ---------- --------- -- --------- ------------ ----------                        
+DISCOUNTNOVEMBER22          1 31-OCT-22 6  30-NOV-22    525001827     923745                        
+DISCOUNTOCTOBERWOO          0 30-SEP-22 6  31-OCT-22                  923745                        
+DISCOUNTFORFREEWOW          0 01-NOV-22 6  01-JAN-23                  568973                        
+DISCOUNTALLYEARYAY          1 01-JAN-22 6  31-DEC-22    525001689     256731                        
+GOLFERSDISCOUNT123          1 01-FEB-22 6  01-FEB-23    525001223     256731                        
+
+SQL> spool off
